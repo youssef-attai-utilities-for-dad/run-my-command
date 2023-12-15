@@ -14,12 +14,12 @@ def run_command_as_admin(command):
 
 # Specify the path to the file containing the command
 app_data_dir = user_data_dir(appname, appauthor)
-file_path = os.path.join(app_data_dir, 'mycommand.txt')
+file_path = os.path.join(app_data_dir, 'mycommands.txt')
 
 try:
     # Open the file and read the command
     with open(file_path, 'r') as file:
-        command = file.read().strip()
+        commands = [line.strip() for line in file.readlines()]
 
 except FileNotFoundError:
     print(f"File not found at {file_path}")
@@ -35,12 +35,13 @@ except FileNotFoundError:
     print(f"Command saved. If you want to edit the command, you can find it here: {file_path}")
 
     # Set the command to the user's input
-    command = user_command
+    commands = [user_command]
 
 try:
     # Run the command as administrator
-    print(f"Running your command: {command}")
-    print(f"You can change your command by editing {file_path}")
-    run_command_as_admin(command)
+    print(f"Running your commands: {commands}")
+    print(f"You can change your commands by editing {file_path}")
+    for command in commands:
+        run_command_as_admin(command)
 except Exception as e:
     print(f"Error: {e}")
